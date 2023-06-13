@@ -79,7 +79,7 @@ public class MainTest {
                             System.out.print("Quanti posti vuoi disdire? ");
                             int numeroDisdette = Integer.parseInt(scanner.nextLine());
                             try {
-                                concerto.disdici(numeroDisdette);
+                                concerto.disdici();
                                 System.out.print("Hai disdetto per " + numeroDisdette + " persone" + "\nPosti disponibili: " + concerto.getPostiDisponibili() + "\n");
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());

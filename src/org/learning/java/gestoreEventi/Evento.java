@@ -35,7 +35,7 @@ public void prenota () {
      postiPrenotati++;
 }
 
-public int disdici (int numeroDisdette) {
+public void disdici () {
     if (date.isBefore(LocalDate.now())) {
         throw new IllegalStateException("L'evento è già passato");
     }
@@ -44,8 +44,7 @@ public int disdici (int numeroDisdette) {
         throw new IllegalStateException("Non ci sono prenotazioni");
     }
 
-    postiPrenotati = postiPrenotati - numeroDisdette;
-    return  postiPrenotati;
+    postiPrenotati--;
 }
 
 //controlla se l evento è gia passato
