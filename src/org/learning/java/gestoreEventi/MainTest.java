@@ -36,7 +36,12 @@ public class MainTest {
                 String scelta = scanner.nextLine();
                 switch (scelta) {
                     case "si":
-                        System.out.println("Quante prenotazioni vuoi effettuare?");
+                        System.out.print("Quante prenotazioni vuoi effettuare? ");
+                        int numeroPrenotati = scanner.nextInt();
+                        evento.prenota(numeroPrenotati);
+                        System.out.println("Hai prenotato per " + evento.prenota(numeroPrenotati) + " persone");
+
+
 
                         break;
                     case "no":

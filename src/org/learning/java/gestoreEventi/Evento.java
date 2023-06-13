@@ -3,7 +3,7 @@ package org.learning.java.gestoreEventi;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.Locale;
+
 
 public class Evento {
     private String titolo;
@@ -25,7 +25,7 @@ public class Evento {
     }
 
     //METODI
-public void prenota () {
+public int prenota (int numeroPrenotati) {
     if (date.isBefore(LocalDate.now())) {
         throw new IllegalStateException("L'evento è già passato");
     }
@@ -34,10 +34,11 @@ public void prenota () {
         throw new IllegalStateException("Non ci sono più posti disponibili");
     }
 
-    postiPrenotati++;
+  return postiPrenotati + numeroPrenotati;
+
 }
 
-public void disdici() {
+public int disdici(int numeroPrenotati) {
     if (date.isBefore(LocalDate.now())) {
         throw new IllegalStateException("L'evento è già passato");
     }
@@ -46,7 +47,7 @@ public void disdici() {
         throw new IllegalStateException("Non ci sono prenotazioni");
     }
 
-    postiPrenotati--;
+    return postiPrenotati - numeroPrenotati;
 }
 
 //controlla se l evento è gia passato
@@ -60,8 +61,8 @@ public boolean isPostiDisponibili() {
 }
 
 //controlla se ci sono prenotazioni
-public boolean hasPrenotazioni() {
-    return postiPrenotati > 0;
+public int hasPrenotazioni() {
+    return postiPrenotati;
 }
 
 //METODO PER OTTENERE NUMERO DI POSTI DISPONIBILI
@@ -71,7 +72,7 @@ public int getPostiDisponibili() {
 
     @Override
 public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(Locale.ITALIAN);
+        DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String dataFormattata = date.format(formatter);
         return "\nData: " + dataFormattata + "\nNome evento: " + getTitolo() + "\nPosti disponibili: " + getPostiDisponibili();
 }
@@ -79,7 +80,7 @@ public String toString() {
 //GETTER E SETTERS
 
     public String getTitolo() {
-        return titolo.toUpperCase(Locale.ROOT);
+        return titolo;
     }
 
     public void setTitolo(String titolo) {
