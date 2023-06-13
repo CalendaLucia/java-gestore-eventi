@@ -1,7 +1,11 @@
 package org.learning.java.gestoreEventi;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MainTest {
@@ -23,14 +27,41 @@ public class MainTest {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate date;
-            try {
-                date = LocalDate.parse(input, formatter);
-                System.out.println("Hai inserito: " + formatter.format(date));
+            date = LocalDate.parse(input, formatter);
+            System.out.println("Hai inserito: " + formatter.format(date));
 
-                System.out.println("Quanti posti saranno disponibili per l'evento?");
-                int totalePosti = Integer.parseInt(scanner.nextLine());
-                Evento evento = new Evento(titolo, date, totalePosti); // Creazione dell'oggetto Evento
-                System.out.println("Evento creato: " + evento.toString());
+            System.out.print("Inserisci l'ora di inizio dell'evento nel seguente formato: ora:minuti  ");
+            LocalTime oraInizioConcerto = null;
+
+            try {
+                oraInizioConcerto = LocalTime.parse(scanner.nextLine());
+            } catch (DateTimeParseException e) {
+                System.out.println("Errore nell'inserimento dell'ora di inizio. Riprova! ");
+                continue;
+            }
+
+
+            System.out.print("Inserisci il costo del biglietto nel seguente formato ##,##€ : ");
+            BigDecimal prezzo = null;
+            try {
+                prezzo = scanner.nextBigDecimal();
+            } catch (InputMismatchException e) {
+                System.out.println("Inserisci il formato del prezzo correttamente");
+                continue;
+            }
+
+            System.out.print("Quanti posti saranno disponibili per l'evento?");
+            int totalePosti = scanner.nextInt();
+            scanner.nextLine();
+
+
+            Concerto concerto = null; // Creazione dell'oggetto Evento
+            try {
+                concerto = new Concerto(titolo, date, totalePosti, oraInizioConcerto, prezzo);
+            } catch (NumberFormatException e) {
+                System.out.println("Il numero di posti totali deve essere positivo");
+            }
+            System.out.println("Evento creato: " + concerto.toString());
 
                 // Ciclo per le prenotazioni/disdette
                 while (true) {
@@ -40,16 +71,16 @@ public class MainTest {
                         case "1":
                             System.out.print("Quante prenotazioni vuoi effettuare? ");
                             int numeroPrenotati = Integer.parseInt(scanner.nextLine());
-                            evento.prenota(numeroPrenotati);
-                            System.out.println("Hai prenotato per " + numeroPrenotati + " persone" + "\nPosti disponibili: " + evento.getPostiDisponibili());
+                            concerto.prenota();
+                            System.out.println("Hai prenotato per " + numeroPrenotati + " persone" + "\nPosti disponibili: " + concerto.getPostiDisponibili());
                             break;
                         case "2":
                             System.out.println("Hai scelto di disdire");
                             System.out.print("Quanti posti vuoi disdire? ");
                             int numeroDisdette = Integer.parseInt(scanner.nextLine());
                             try {
-                                evento.disdici(numeroDisdette);
-                                System.out.print("Hai disdetto per " + numeroDisdette + " persone" + "\nPosti disponibili: " + evento.getPostiDisponibili() + "\n");
+                                concerto.disdici(numeroDisdette);
+                                System.out.print("Hai disdetto per " + numeroDisdette + " persone" + "\nPosti disponibili: " + concerto.getPostiDisponibili() + "\n");
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
@@ -69,9 +100,7 @@ public class MainTest {
                 }
 
 
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage() + " " + "Riprova"); // Stampa il messaggio dell'eccezione
-            }
+
             stop = true;
         } while (!stop);
 

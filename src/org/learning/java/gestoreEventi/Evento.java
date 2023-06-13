@@ -24,18 +24,15 @@ public class Evento {
     }
 
     //METODI
-public int prenota (int numeroPrenotati) {
+public void prenota () {
     if (date.isBefore(LocalDate.now())) {
         throw new IllegalStateException("L'evento è già passato");
     }
-
     if (postiPrenotati >= totalePosti) {
         throw new IllegalStateException("Non ci sono più posti disponibili");
     }
 
-     postiPrenotati =  numeroPrenotati ;
-     return postiPrenotati;
-
+     postiPrenotati++;
 }
 
 public int disdici (int numeroDisdette) {
