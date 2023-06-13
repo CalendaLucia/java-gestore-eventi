@@ -1,6 +1,9 @@
 package org.learning.java.gestoreEventi;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 
 public class Evento {
     private String titolo;
@@ -47,17 +50,17 @@ public void disdici() {
 }
 
 //controlla se l evento è gia passato
-private boolean isEventoPassato() {
+public boolean isEventoPassato() {
     return date.isBefore(LocalDate.now());
 }
 
 //controlla se ci sono posti disponibili
-private boolean isPostiDisponibili() {
+public boolean isPostiDisponibili() {
     return postiPrenotati < totalePosti;
 }
 
 //controlla se ci sono prenotazioni
-private boolean hasPrenotazioni() {
+public boolean hasPrenotazioni() {
     return postiPrenotati > 0;
 }
 
@@ -68,16 +71,20 @@ public int getPostiDisponibili() {
 
     @Override
 public String toString() {
-    return date.toString() + " - " + titolo;
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(Locale.ITALIAN);
+        String dataFormattata = date.format(formatter);
+        return "\nData: " + dataFormattata + "\nNome evento: " + getTitolo() + "\nPosti disponibili: " + getPostiDisponibili();
 }
 
 //GETTER E SETTERS
 
     public String getTitolo() {
-        return titolo;
+        return titolo.toUpperCase(Locale.ROOT);
     }
 
     public void setTitolo(String titolo) {
+
+
         this.titolo = titolo;
     }
 
