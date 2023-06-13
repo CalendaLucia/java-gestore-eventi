@@ -71,7 +71,12 @@ public class MainTest {
                         case "1":
                             System.out.print("Quante prenotazioni vuoi effettuare? ");
                             int numeroPrenotati = Integer.parseInt(scanner.nextLine());
-                            concerto.prenota();
+                            try {
+                                concerto.prenota();
+                            } catch (IllegalStateException e) {
+                                System.out.println("Mi dispiace, non ci sono più posti disponibili");
+                                continue;
+                            }
                             System.out.println("Hai prenotato per " + numeroPrenotati + " persone" + "\nPosti disponibili: " + concerto.getPostiDisponibili());
                             break;
                         case "2":
