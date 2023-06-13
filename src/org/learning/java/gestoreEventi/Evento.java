@@ -2,7 +2,6 @@ package org.learning.java.gestoreEventi;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 
 
 public class Evento {
@@ -34,11 +33,12 @@ public int prenota (int numeroPrenotati) {
         throw new IllegalStateException("Non ci sono più posti disponibili");
     }
 
-  return postiPrenotati + numeroPrenotati;
+     postiPrenotati =  numeroPrenotati ;
+     return postiPrenotati;
 
 }
 
-public int disdici(int numeroPrenotati) {
+public int disdici (int numeroDisdette) {
     if (date.isBefore(LocalDate.now())) {
         throw new IllegalStateException("L'evento è già passato");
     }
@@ -47,7 +47,8 @@ public int disdici(int numeroPrenotati) {
         throw new IllegalStateException("Non ci sono prenotazioni");
     }
 
-    return postiPrenotati - numeroPrenotati;
+    postiPrenotati = postiPrenotati - numeroDisdette;
+    return  postiPrenotati;
 }
 
 //controlla se l evento è gia passato
@@ -61,8 +62,8 @@ public boolean isPostiDisponibili() {
 }
 
 //controlla se ci sono prenotazioni
-public int hasPrenotazioni() {
-    return postiPrenotati;
+public boolean hasPrenotazioni() {
+    return postiPrenotati > 0;
 }
 
 //METODO PER OTTENERE NUMERO DI POSTI DISPONIBILI
