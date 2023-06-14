@@ -2,32 +2,32 @@ package org.learning.java.gestoreEventi;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 
 public class Evento {
     private String titolo;
     private LocalDate date;
     private int totalePosti;
-    private int postiPrenotati = 0;
+    private int postiPrenotati;
 
     public Evento (String titolo, LocalDate date, int totalePosti)  {
 
-        if (date.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("La data è già passata");
-        }
+        validazioneTitolo(titolo);
+        validazioneData(date);
+
         if (totalePosti <= 0  ) {
             throw new IllegalArgumentException("Il numero di posti totali deve essere positivo");
         }
         this.titolo = titolo;
         this.date = date;
         this.totalePosti = totalePosti;
+        this.postiPrenotati = 0;
     }
 
     //METODI
 public void prenota () {
-    if (date.isBefore(LocalDate.now())) {
-        throw new IllegalStateException("L'evento è già passato");
-    }
+    validazioneData(date);
     if (postiPrenotati >= totalePosti) {
         throw new IllegalStateException("Non ci sono più posti disponibili");
     }
@@ -36,9 +36,7 @@ public void prenota () {
 }
 
 public void disdici () {
-    if (date.isBefore(LocalDate.now())) {
-        throw new IllegalStateException("L'evento è già passato");
-    }
+    validazioneData(date);
 
     if (postiPrenotati <= 0) {
         throw new IllegalStateException("Non ci sono prenotazioni");
@@ -52,15 +50,6 @@ public boolean isEventoPassato() {
     return date.isBefore(LocalDate.now());
 }
 
-//controlla se ci sono posti disponibili
-public boolean isPostiDisponibili() {
-    return postiPrenotati < totalePosti;
-}
-
-//controlla se ci sono prenotazioni
-public boolean hasPrenotazioni() {
-    return postiPrenotati > 0;
-}
 
 //METODO PER OTTENERE NUMERO DI POSTI DISPONIBILI
 public int getPostiDisponibili() {
@@ -74,6 +63,19 @@ public String toString() {
         return "\nData: " + dataFormattata + "\nNome evento: " + getTitolo() + "\nPosti disponibili: " + getPostiDisponibili();
 }
 
+//creare metodo per lancio eccezioni in comune
+    private void validazioneTitolo(String titolo) throws IllegalArgumentException {
+        if (titolo == null || titolo.isEmpty()) {
+            throw new IllegalArgumentException("Titolo non valido");
+        }
+    }
+
+    private void validazioneData(LocalDate date) {
+        if ( date == null || date.isBefore(LocalDate.now()) ) {
+            throw new IllegalArgumentException("La data non può essere precedente alla data corrente.");
+        }
+    }
+
 //GETTER E SETTERS
 
     public String getTitolo() {
@@ -81,8 +83,7 @@ public String toString() {
     }
 
     public void setTitolo(String titolo) {
-
-
+        validazioneTitolo(titolo);
         this.titolo = titolo;
     }
 
@@ -91,9 +92,7 @@ public String toString() {
     }
 
     public void setDate(LocalDate date) {
-        if (date.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("La data è già passata");
-        }
+        validazioneData(date);
         this.date = date;
     }
 
